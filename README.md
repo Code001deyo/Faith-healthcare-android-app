@@ -1,1 +1,1 @@
-Faith healthcar
+Faith healthcare
