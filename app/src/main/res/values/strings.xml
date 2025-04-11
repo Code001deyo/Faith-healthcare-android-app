@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Faith Healthcare</string>
+    <string name="our_specialists">Our Specialists</string>
+    
+    <!-- Doctor specialties -->
+    <string name="family_physician">Family Physician</string>
+    <string name="dietician">Dietician</string>
+    <string name="dentist">Dentist</string>
+    <string name="surgeon">Surgeon</string>
+    <string name="cardiologist">Cardiologist</string>
+    <string name="back">Back</string>
+    
+    <!-- Content descriptions -->
+    <string name="family_physician_icon">Family Physician Icon</string>
+    <string name="dietician_icon">Dietician Icon</string>
+    <string name="dentist_icon">Dentist Icon</string>
+    <string name="surgeon_icon">Surgeon Icon</string>
+    <string name="cardiologist_icon">Cardiologist Icon</string>
+    <string name="back_icon">Back Icon</string>
+
+    <!-- Buy Medicine -->
+    <string name="buy_medicine">Buy Medicine</string>
+    <string name="online_store_message">You can also buy medicines from our trusted online partner:</string>
+    <string name="mydawa_title">MyDawa Online Pharmacy</string>
+    <string name="mydawa_description">Kenya\'s leading online pharmacy. Get quality medicines delivered to your doorstep.</string>
+    <string name="visit_store">Visit Store</string>
+    <string name="go_to_cart">Go to Cart</string>
+</resources>
