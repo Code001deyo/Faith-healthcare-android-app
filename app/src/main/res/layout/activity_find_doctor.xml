@@ -7,12 +7,6 @@
     android:background="@drawable/background_with_overlay"
     tools:context=".FindDoctorActivity">
 
-    <!-- Darker overlay with better alpha value -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#80000000"/>
-
     <TextView
         android:id="@+id/titleFindDoctor"
         android:layout_width="wrap_content"
@@ -52,21 +46,20 @@
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:columnCount="2"
             android:orientation="horizontal"
             android:alignmentMode="alignBounds"
-            android:useDefaultMargins="true">
+            android:useDefaultMargins="true"
+            android:paddingBottom="32dp">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardFDFamilyPhysician"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="200dp"
                 android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="6dp"
                 app:cardBackgroundColor="#FFFFFF"
                 android:clickable="true"
                 android:focusable="true"
@@ -77,34 +70,35 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="16dp">
+                    android:padding="8dp">
 
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
                         android:src="@drawable/family_physicians"
                         android:scaleType="centerCrop"
-                        android:layout_marginBottom="8dp"
-                        android:contentDescription="@string/family_physician_icon"/>
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/round_image_bg"
+                        android:contentDescription="@string/family_physician_icon" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/family_physician"
                         android:textColor="#000000"
-                        android:textSize="14sp"
-                        android:textStyle="bold"/>
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardFDDietician"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="200dp"
                 android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="6dp"
                 app:cardBackgroundColor="#FFFFFF"
                 android:clickable="true"
                 android:focusable="true"
@@ -115,34 +109,35 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="16dp">
+                    android:padding="8dp">
 
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
                         android:src="@drawable/dietician"
                         android:scaleType="centerCrop"
-                        android:layout_marginBottom="8dp"
-                        android:contentDescription="@string/dietician_icon"/>
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/round_image_bg"
+                        android:contentDescription="@string/dietician_icon" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/dietician"
                         android:textColor="#000000"
-                        android:textSize="14sp"
-                        android:textStyle="bold"/>
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardFDDentist"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="200dp"
                 android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="6dp"
                 app:cardBackgroundColor="#FFFFFF"
                 android:clickable="true"
                 android:focusable="true"
@@ -153,34 +148,35 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="16dp">
+                    android:padding="8dp">
 
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
                         android:src="@drawable/dentist"
                         android:scaleType="centerCrop"
-                        android:layout_marginBottom="8dp"
-                        android:contentDescription="@string/dentist_icon"/>
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/round_image_bg"
+                        android:contentDescription="@string/dentist_icon" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/dentist"
                         android:textColor="#000000"
-                        android:textSize="14sp"
-                        android:textStyle="bold"/>
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardFDSurgeon"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="200dp"
                 android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="6dp"
                 app:cardBackgroundColor="#FFFFFF"
                 android:clickable="true"
                 android:focusable="true"
@@ -191,34 +187,35 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="16dp">
+                    android:padding="8dp">
 
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
                         android:src="@drawable/surgeon"
                         android:scaleType="centerCrop"
-                        android:layout_marginBottom="8dp"
-                        android:contentDescription="@string/surgeon_icon"/>
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/round_image_bg"
+                        android:contentDescription="@string/surgeon_icon" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/surgeon"
                         android:textColor="#000000"
-                        android:textSize="14sp"
-                        android:textStyle="bold"/>
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardFDCardiologists"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="200dp"
                 android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="6dp"
                 app:cardBackgroundColor="#FFFFFF"
                 android:clickable="true"
                 android:focusable="true"
@@ -229,34 +226,35 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="16dp">
+                    android:padding="8dp">
 
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
                         android:src="@drawable/cardiologists"
                         android:scaleType="centerCrop"
-                        android:layout_marginBottom="8dp"
-                        android:contentDescription="@string/cardiologist_icon"/>
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/round_image_bg"
+                        android:contentDescription="@string/cardiologist_icon" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/cardiologist"
                         android:textColor="#000000"
-                        android:textSize="14sp"
-                        android:textStyle="bold"/>
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardFDBack"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="200dp"
                 android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="6dp"
                 app:cardBackgroundColor="#FFFFFF"
                 android:clickable="true"
                 android:focusable="true"
@@ -267,23 +265,24 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="16dp">
+                    android:padding="8dp">
 
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
                         android:src="@drawable/iconsback"
                         android:scaleType="centerCrop"
-                        android:layout_marginBottom="8dp"
-                        android:contentDescription="@string/back_icon"/>
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/round_image_bg"
+                        android:contentDescription="@string/back_icon" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/back"
                         android:textColor="#000000"
-                        android:textSize="14sp"
-                        android:textStyle="bold"/>
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backg"
+    android:background="@drawable/background_articles_details_overlay"
     tools:context=".HealthArticlesDeatails">
     <TextView
         android:id="@+id/textViewHADtitle"
@@ -24,7 +24,7 @@
         android:id="@+id/textview_logo3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="24*7 Healthcare"
+        android:text="Faith Healthcare"
         android:textColor="@color/colorWhite"
         android:textSize="34sp"
         android:textStyle="bold"
@@ -41,12 +41,25 @@
         android:layout_width="358dp"
         android:layout_height="526dp"
         android:layout_marginTop="8dp"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewHADtitle"
-
         tools:ignore="MissingConstraints" />
 
 
+    <Button
+        android:id="@+id/buttonHADLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Read More Online"
+        android:textColor="#1565C0"
+        android:textSize="16sp"
+        android:backgroundTint="#FFFFFF"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/imageHADView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,7 +13,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +29,7 @@ public class CartBuyMedicineActivity extends AppCompatActivity {
     private DatePickerDialog datePickerDialog;
     private Button dateButton, btnCheckout, btnBack;
     private ArrayList<HashMap<String, String>> cartList;
-    private SimpleAdapter adapter;
+    private CartMedicineListAdapter adapter;
     private float totalAmount = 0;
     private String[][] cartItems = {};
     private static final String DATE_FORMAT = "dd/MM/yyyy";
@@ -114,17 +113,18 @@ public class CartBuyMedicineActivity extends AppCompatActivity {
             map.put("line3", item[2]); // Additional info (if any)
             map.put("line4", item[3]); // Additional info (if any)
             map.put("line5", item[4]); // Cost
+            // Set image resource if available (reuse logic from BuyMedicineActivity)
+            Integer resId = BuyMedicineActivity.medicineImageMap.get(item[0]);
+            if (resId != null) {
+                map.put("imageResId", String.valueOf(resId));
+            }
             cartList.add(map);
         }
 
-        adapter = new SimpleAdapter(
+        adapter = new CartMedicineListAdapter(
             this,
-            cartList,
-            R.layout.multi_lines,
-            new String[]{"line1", "line2", "line3", "line4", "line5"},
-            new int[]{R.id.line_a, R.id.line_b, R.id.line_c, R.id.line_d, R.id.line_e}
+            cartList
         );
-
         cartListView.setAdapter(adapter);
     }
 
@@ -150,7 +150,7 @@ public class CartBuyMedicineActivity extends AppCompatActivity {
                 }
 
                 Intent intent = new Intent(CartBuyMedicineActivity.this, BuyMedicineBookActivity.class);
-                intent.putExtra("price", String.format(Locale.getDefault(), "%.2f", totalAmount));
+                intent.putExtra("price", String.format(Locale.getDefault(), "Price: KES %.2f", totalAmount));
                 intent.putExtra("date", dateButton.getText().toString());
                 startActivity(intent);
             }

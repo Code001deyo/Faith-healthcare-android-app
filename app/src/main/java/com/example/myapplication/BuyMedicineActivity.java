@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -17,6 +16,18 @@ import java.util.HashMap;
 
 public class BuyMedicineActivity extends AppCompatActivity {
     private static final String MYDAWA_URL = "https://mydawa.com/";
+
+    public static final HashMap<String, Integer> medicineImageMap = new HashMap<>();
+    static {
+        medicineImageMap.put("Aspirin", R.drawable.aspirin);
+        medicineImageMap.put("Ibuprofen", R.drawable.ibuprofen);
+        medicineImageMap.put("Acetaminophen", R.drawable.acetaminophen);
+        medicineImageMap.put("Lisinopril", R.drawable.lisinopril);
+        medicineImageMap.put("Atorvastatin", R.drawable.atorvastatin);
+        medicineImageMap.put("Metformin", R.drawable.metformin);
+        medicineImageMap.put("Amoxicillin", R.drawable.amoxicillin);
+        medicineImageMap.put("Omeprazole", R.drawable.omeprazole);
+    }
 
     private final String[][] medicines = {
             {"Aspirin", "Pain relief and fever reduction", "Common pain reliever", "500mg tablets", "50"},
@@ -43,7 +54,7 @@ public class BuyMedicineActivity extends AppCompatActivity {
     private ListView medicineListView;
     private Button btnBack, btnGoToCart, btnVisitMydawa;
     private ArrayList<HashMap<String, String>> medicineList;
-    private SimpleAdapter adapter;
+    private MedicineListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,19 +113,20 @@ public class BuyMedicineActivity extends AppCompatActivity {
             item.put("line3", medicine[2]); // Description
             item.put("line4", medicine[3]); // Dosage
             item.put("line5", "Price: KES " + medicine[4]); // Price
+            // Add image resource name as a string (to be used by custom adapter)
+            Integer resId = medicineImageMap.get(medicine[0]);
+            if (resId != null) {
+                item.put("imageResId", String.valueOf(resId));
+            }
             medicineList.add(item);
         }
     }
 
     private void setupListView() {
-        adapter = new SimpleAdapter(
+        adapter = new MedicineListAdapter(
             this,
-            medicineList,
-            R.layout.multi_lines,
-            new String[]{"line1", "line2", "line3", "line4", "line5"},
-            new int[]{R.id.line_a, R.id.line_b, R.id.line_c, R.id.line_d, R.id.line_e}
+            medicineList
         );
-        
         medicineListView.setAdapter(adapter);
 
         medicineListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

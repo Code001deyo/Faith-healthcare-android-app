@@ -4,48 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backg"
+    android:background="@drawable/background_articles_overlay_dark"
     tools:context=".LabTestDetailsActivity">
 
+    
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="248dp"
-        android:layout_height="84dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginEnd="82dp"
-        android:text="24*7 Healthcare"
-        app:layout_constraintBottom_toBottomOf="@+id/listViewCart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.312"
-        app:srcCompat="@drawable/logo" />
-
-    <TextView
-        android:id="@+id/listViewCart"
+    <FrameLayout
+        android:id="@+id/logoFrame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="616dp"
-        android:text="Deliver Location : Pune"
-        android:textColor="@color/colorWhite"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textViewBMCartTitle"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="16dp">
+
+        <ImageView
+            android:id="@+id/logoBg"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="@drawable/logo_rounded_white_bg"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/logo"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center" />
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/textViewBMCartTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="572dp"
+        android:layout_marginTop="12dp"
         android:text="Lab Test and packages"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/yellowLight"
         android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/logoFrame"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/listViewBMCart"
+        app:layout_constraintHorizontal_bias="0.5"/>
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

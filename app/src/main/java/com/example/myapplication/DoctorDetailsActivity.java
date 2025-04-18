@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -81,7 +82,8 @@ public class DoctorDetailsActivity extends AppCompatActivity {
         });
 
         list = new ArrayList<>();
-        for (String[] doctor_detail : doctor_details) {
+        for (int idx = 0; idx < doctor_details.length; idx++) {
+            String[] doctor_detail = doctor_details[idx];
             HashMap<String, String> item = new HashMap<>();
             item.put("line1", doctor_detail[0]);
             item.put("line2", doctor_detail[1]);
@@ -89,6 +91,13 @@ public class DoctorDetailsActivity extends AppCompatActivity {
             item.put("line4", doctor_detail[3]);
             item.put("line5", doctor_detail[4]);
             item.put("line6", doctor_detail[5]);
+            // Set doctor image by gender (male/female)
+            String name = doctor_detail[0].toLowerCase();
+            if (name.contains("sarah") || name.contains("emily") || name.contains("rachel") || name.contains("lisa") || name.contains("maria") || name.contains("patricia") || name.contains("elizabeth")) {
+                item.put("image", "physician_female");
+            } else {
+                item.put("image", "physician_male");
+            }
             list.add(item);
         }
 
@@ -96,9 +105,21 @@ public class DoctorDetailsActivity extends AppCompatActivity {
             this,
             list,
             R.layout.multi_lines,
-            new String[]{"line1", "line2", "line3", "line4", "line5", "line6"},
-            new int[]{R.id.line_a, R.id.line_b, R.id.line_c, R.id.line_d, R.id.line_e, R.id.line_f}
+            new String[]{"line1", "line2", "line3", "line4", "line5", "line6", "image"},
+            new int[]{R.id.line_a, R.id.line_b, R.id.line_c, R.id.line_d, R.id.line_e, R.id.line_d, R.id.medicine_image}
         );
+        sa.setViewBinder(new SimpleAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Object data, String textRepresentation) {
+                if (view.getId() == R.id.medicine_image && data instanceof String) {
+                    String imgName = (String) data;
+                    int resId = getResources().getIdentifier(imgName, "drawable", getPackageName());
+                    ((ImageView) view).setImageResource(resId);
+                    return true;
+                }
+                return false;
+            }
+        });
 
         lst.setAdapter(sa);
 

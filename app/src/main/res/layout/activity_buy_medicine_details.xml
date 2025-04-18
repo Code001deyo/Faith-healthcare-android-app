@@ -7,104 +7,102 @@
     android:background="@drawable/background_with_overlay"
     tools:context=".BuyMedicineDetailsActivity">
 
+    <!-- Faith Healthcare Title (White) -->
     <TextView
-        android:id="@+id/listViewCart"
+        android:id="@+id/textViewFaithHealthcare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="616dp"
-        android:text="Deliver Location : Pune"
-        android:textColor="@color/yellowLight"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:text="Faith Healthcare"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
         android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Medicine Title (White) -->
     <TextView
         android:id="@+id/textViewBMCartTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="572dp"
-        android:text="Buy Medicine"
-        android:textColor="@color/yellowLight"
-        android:textSize="24sp"
+        android:text="Aspirin"
+        android:textColor="#FFFFFF"
+        android:textSize="28sp"
         android:textStyle="bold"
         android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/textViewFaithHealthcare"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/buttonBMDBack"
-        android:layout_width="87dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/input_bg"
-        android:backgroundTint="@color/purple_500"
-        android:paddingTop="12dp"
-        android:text="Back"
-        android:textAlignment="center"
-        android:textColor="@color/yellowLight"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/buttonBMToCart"
-        android:layout_width="87dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/input_bg"
-        android:backgroundTint="@color/purple_500"
-        android:paddingTop="12dp"
-        android:text="Add To Cart"
-        android:textAlignment="center"
-        android:textColor="@color/yellowLight"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
+    <!-- Medicine Description (Solid White Glass Tile) -->
     <EditText
         android:id="@+id/listViewBMCart"
-        android:layout_width="338dp"
-        android:layout_height="368dp"
-        android:layout_marginBottom="192dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:ems="10"
         android:inputType="textMultiLine"
-        android:text="Hi\nhello"
-        android:textColor="@color/yellowLight"
+        android:text="Description goes here"
+        android:textColor="#222222"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.575"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:background="#FFFFFF"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/textViewBMCartTitle"
+        app:layout_constraintBottom_toTopOf="@id/textViewBMDTotalCost"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Total Cost (White) -->
     <TextView
         android:id="@+id/textViewBMDTotalCost"
-        android:layout_width="317dp"
-        android:layout_height="27dp"
-        android:text="TextView"
-        android:textColor="@color/yellowLight"
-        android:textSize="12sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Cost: KES 0.00"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
         android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.446"
+        app:layout_constraintBottom_toTopOf="@+id/buttonBMToCart"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listViewBMCart"
-        app:layout_constraintVertical_bias="0.213" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Back Button (Blue with White Text) -->
+    <Button
+        android:id="@+id/buttonBMDBack"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#1565C0"
+        android:text="Back"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/buttonBMToCart" />
+
+    <!-- Add To Cart Button (Blue with White Text) -->
+    <Button
+        android:id="@+id/buttonBMToCart"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#1565C0"
+        android:text="Add To Cart"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/buttonBMDBack"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

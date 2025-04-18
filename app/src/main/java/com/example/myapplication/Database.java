@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -13,6 +14,54 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 public class Database extends SQLiteOpenHelper {
+    // ...
+    /**
+     * Returns a list of all users (excluding admin), each as "username$email".
+     */
+    public ArrayList<String> getAllUsers() {
+        ArrayList<String> users = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = db.query("users", new String[]{"username", "email"}, "isadmin=0", null, null, null, "username ASC");
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String username = cursor.getString(cursor.getColumnIndex("username"));
+                    String email = cursor.getString(cursor.getColumnIndex("email"));
+                    users.add(username + "$" + email);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("Database", "Error getting all users: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return users;
+    }
+
+    /**
+     * Deletes a user by username. Returns true if a user was deleted.
+     */
+    public boolean deleteUser(String username) {
+        if (TextUtils.isEmpty(username)) {
+            return false;
+        }
+        SQLiteDatabase db = getWritableDatabase();
+        try {
+            int rows = db.delete("users", "username=?", new String[]{username});
+            Log.d("Database", "Deleted user: " + username + ", rows: " + rows);
+            return rows > 0;
+        } catch (Exception e) {
+            Log.e("Database", "Error deleting user: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        } finally {
+            db.close();
+        }
+    }
     private static final String ADMIN_USERNAME = "admin";
     private static final String ADMIN_PASSWORD = "admin123";
     private static final String ADMIN_EMAIL = "admin@healthcare.com";
@@ -21,8 +70,8 @@ public class Database extends SQLiteOpenHelper {
 
     public Database(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        // Only initialize admin user
         SQLiteDatabase db = getWritableDatabase();
-        onCreate(db); // Ensure tables exist
         initializeAdmin(db);
     }
 
@@ -58,11 +107,6 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         try {
-            // Drop existing tables if they exist
-            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS appointments");
-            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS orderplace");
-            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS cart");
-            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS users");
 
             // Create tables
             String qry1 = "CREATE TABLE users (" +
@@ -108,6 +152,10 @@ public class Database extends SQLiteOpenHelper {
                 "FOREIGN KEY(username) REFERENCES users(username) ON DELETE CASCADE" +
                 ")";
             sqLiteDatabase.execSQL(qry4);
+
+        // --- AddAppointment method ---
+        // See bottom of file for implementation
+
 
             Log.d("Database", "Tables created successfully");
         } catch (Exception e) {
@@ -157,26 +205,38 @@ public class Database extends SQLiteOpenHelper {
 
     public int login(String username, String password) {
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+            Log.d("Database", "Login failed: Empty username or password");
             return 0;
         }
 
+        // Special handling for admin login
+        if (ADMIN_USERNAME.equals(username)) {
+            if (ADMIN_PASSWORD.equals(password)) {
+                Log.d("Database", "Admin login successful");
+                return 2; // Admin login successful
+            }
+            Log.d("Database", "Admin login failed: incorrect password");
+            return 0; // Admin login failed
+        }
+
+        // Regular user login
         int result = 0;
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = null;
         
         try {
-            String[] columns = {"isadmin", "password"};
-            String selection = "username=?";
+            String[] columns = {"password"};
+            String selection = "username=? AND isadmin=0";
             String[] selectionArgs = {username};
             cursor = db.query("users", columns, selection, selectionArgs, null, null, null);
             
             if (cursor != null && cursor.moveToFirst()) {
-                String storedPassword = cursor.getString(cursor.getColumnIndex("password"));
+                @SuppressLint("Range") String storedPassword = cursor.getString(cursor.getColumnIndex("password"));
                 if (password.equals(storedPassword)) {
-                    result = cursor.getInt(cursor.getColumnIndex("isadmin")) == 1 ? 2 : 1;
+                    result = 1; // Regular user login successful
+                    Log.d("Database", "User login successful: " + username);
                 }
             }
-            Log.d("Database", "Login result for " + username + ": " + result);
         } catch (Exception e) {
             Log.e("Database", "Error during login: " + e.getMessage());
             e.printStackTrace();
@@ -185,6 +245,8 @@ public class Database extends SQLiteOpenHelper {
                 cursor.close();
             }
         }
+
+        Log.d("Database", "Login result for " + username + ": " + result);
         return result;
     }
 
@@ -194,22 +256,22 @@ public class Database extends SQLiteOpenHelper {
         Cursor c = null;
         
         try {
-            c = db.query("appointments", null, null, null, null, null, "date ASC, time ASC");
+            c = db.query("orderplace", null, "otype=?", new String[]{"appointment"}, null, null, "date ASC, time ASC");
             
             if (c != null && c.moveToFirst()) {
+                int idIndex = c.getColumnIndex("id");
                 int fullnameIndex = c.getColumnIndex("fullname");
                 int addressIndex = c.getColumnIndex("address");
                 int contactnoIndex = c.getColumnIndex("contactno");
-                int usernameIndex = c.getColumnIndex("username");
                 int dateIndex = c.getColumnIndex("date");
                 int timeIndex = c.getColumnIndex("time");
 
                 do {
-                    String appointment = String.format("%s | %s | %s | %s | %s %s",
+                    String appointment = String.format("%s$%s$%s$%s$%s$%s",
+                        c.getString(idIndex),
                         c.getString(fullnameIndex),
                         c.getString(addressIndex),
                         c.getString(contactnoIndex),
-                        c.getString(usernameIndex),
                         c.getString(dateIndex),
                         c.getString(timeIndex)
                     );
@@ -233,28 +295,26 @@ public class Database extends SQLiteOpenHelper {
         Cursor c = null;
         
         try {
-            c = db.query("orderplace", null, null, null, null, null, "date ASC, time ASC");
+            c = db.query("orderplace", null, "otype=?", new String[]{"medicine"}, null, null, "date ASC, time ASC");
             
             if (c != null && c.moveToFirst()) {
+                int idIndex = c.getColumnIndex("id");
                 int fullnameIndex = c.getColumnIndex("fullname");
                 int addressIndex = c.getColumnIndex("address");
                 int contactnoIndex = c.getColumnIndex("contactno");
-                int usernameIndex = c.getColumnIndex("username");
                 int dateIndex = c.getColumnIndex("date");
                 int timeIndex = c.getColumnIndex("time");
                 int amountIndex = c.getColumnIndex("amount");
-                int otypeIndex = c.getColumnIndex("otype");
 
                 do {
-                    String order = String.format("%s | %s | %s | %s | %s %s | ₹%.2f | %s",
+                    String order = String.format("%s$%s$%s$%s$%s$%s$KES %.2f",
+                        c.getString(idIndex),
                         c.getString(fullnameIndex),
                         c.getString(addressIndex),
                         c.getString(contactnoIndex),
-                        c.getString(usernameIndex),
                         c.getString(dateIndex),
                         c.getString(timeIndex),
-                        c.getDouble(amountIndex),
-                        c.getString(otypeIndex)
+                        c.getDouble(amountIndex)
                     );
                     arr.add(order);
                 } while (c.moveToNext());
@@ -375,6 +435,32 @@ public class Database extends SQLiteOpenHelper {
         return arr;
     }
 
+    // Add a new appointment to the appointments table
+    public boolean addAppointment(String username, String fullname, String address, String contact, String date, String time) {
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(fullname) ||
+            TextUtils.isEmpty(address) || TextUtils.isEmpty(contact) ||
+            TextUtils.isEmpty(date)) {
+            return false;
+        }
+        SQLiteDatabase db = getWritableDatabase();
+        try {
+            ContentValues cv = new ContentValues();
+            cv.put("username", username);
+            cv.put("fullname", fullname);
+            cv.put("address", address);
+            cv.put("contactno", contact);
+            cv.put("date", date);
+            cv.put("time", time);
+            long result = db.insert("appointments", null, cv);
+            Log.d("Database", "Appointment addition result: " + result);
+            return result != -1;
+        } catch (Exception e) {
+            Log.e("Database", "Error adding appointment: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+    // --- End AddAppointment ---
     public boolean addOrder(String username, String fullname, String address, String contact, int pincode, String date, String time, float price, String otype) {
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(fullname) || 
             TextUtils.isEmpty(address) || TextUtils.isEmpty(contact) || 
@@ -467,6 +553,80 @@ public class Database extends SQLiteOpenHelper {
             return result;
         } catch (Exception e) {
             Log.e("Database", "Error checking appointment existence: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            db.close();
+        }
+    }
+
+    public boolean deleteAppointment(String id) {
+        if (TextUtils.isEmpty(id)) {
+            return false;
+        }
+        SQLiteDatabase db = getWritableDatabase();
+        try {
+            // Delete from 'orderplace' table where otype is 'appointment'
+            int rows = db.delete("orderplace", "id=? AND otype=?", new String[]{id, "appointment"});
+            return rows > 0;
+        } catch (Exception e) {
+            Log.e("Database", "Error deleting appointment: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        } finally {
+            db.close();
+        }
+    }
+
+    public boolean deleteOrder(String id) {
+        if (TextUtils.isEmpty(id)) {
+            return false;
+        }
+        SQLiteDatabase db = getWritableDatabase();
+        try {
+            int rows = db.delete("orderplace", "id=?", new String[]{id});
+            return rows > 0;
+        } catch (Exception e) {
+            Log.e("Database", "Error deleting order: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        } finally {
+            db.close();
+        }
+    }
+
+    // Accept an appointment by moving it from 'orderplace' to 'appointments' and deleting from 'orderplace'
+    public boolean acceptAppointment(String id) {
+        if (TextUtils.isEmpty(id)) {
+            return false;
+        }
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor c = null;
+        try {
+            // Get the appointment details from orderplace
+            c = db.query("orderplace", null, "id=? AND otype=?", new String[]{id, "appointment"}, null, null, null);
+            if (c != null && c.moveToFirst()) {
+                ContentValues cv = new ContentValues();
+                cv.put("username", c.getString(c.getColumnIndex("username")));
+                cv.put("fullname", c.getString(c.getColumnIndex("fullname")));
+                cv.put("address", c.getString(c.getColumnIndex("address")));
+                cv.put("contactno", c.getString(c.getColumnIndex("contactno")));
+                cv.put("date", c.getString(c.getColumnIndex("date")));
+                cv.put("time", c.getString(c.getColumnIndex("time")));
+                // Insert into appointments
+                long result = db.insert("appointments", null, cv);
+                if (result != -1) {
+                    // Delete from orderplace
+                    db.delete("orderplace", "id=?", new String[]{id});
+                    return true;
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            Log.e("Database", "Error accepting appointment: " + e.getMessage());
             e.printStackTrace();
             return false;
         } finally {

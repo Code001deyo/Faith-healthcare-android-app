@@ -40,10 +40,23 @@ public class LabTestBookActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
                 String username = sharedPreferences.getString("username","").toString();
                 Database db = new Database(getApplicationContext());
-                db.addOrder(username,edname.getText().toString(),edaddress.getText().toString(),edcontact.getText().toString(),Integer.parseInt(edpincode.getText().toString()),date.toString(),"",Float.parseFloat(price[1].toString()),"medicine");
-                db.removeCart(username,"medicine");
-                Toast.makeText(getApplicationContext(),"Your Booking is Done Successfully", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(LabTestBookActivity.this,HomeActivity.class));
+                String fullname = edname.getText().toString();
+                String address = edaddress.getText().toString();
+                String contact = edcontact.getText().toString();
+                int pincode = Integer.parseInt(edpincode.getText().toString());
+                float amount = Float.parseFloat(price[1].toString());
+                // Add order (otype = 'lab')
+                boolean orderSuccess = db.addOrder(username, fullname, address, contact, pincode, date, time, amount, "lab");
+                // Add appointment
+                boolean appointmentSuccess = db.addAppointment(username, fullname, address, contact, date, time);
+                // Remove from lab cart
+                db.removeCart(username, "Lab");
+                if (orderSuccess && appointmentSuccess) {
+                    Toast.makeText(getApplicationContext(), "Your Lab Test Booking is Done Successfully", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(LabTestBookActivity.this, HomeActivity.class));
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error booking lab test. Please try again.", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

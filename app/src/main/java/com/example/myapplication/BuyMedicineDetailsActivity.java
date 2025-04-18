@@ -16,6 +16,7 @@ import android.widget.Toast;
 import java.util.Locale;
 
 public class BuyMedicineDetailsActivity extends AppCompatActivity {
+    private TextView tvFaithHealthcare;
     private TextView tvMedicineName;
     private TextView tvTotalCost;
     private EditText edDetails;
@@ -37,6 +38,7 @@ public class BuyMedicineDetailsActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
+        tvFaithHealthcare = findViewById(R.id.textViewFaithHealthcare);
         tvMedicineName = findViewById(R.id.textViewBMCartTitle);
         edDetails = findViewById(R.id.listViewBMCart);
         tvTotalCost = findViewById(R.id.textViewBMDTotalCost);
@@ -74,9 +76,15 @@ public class BuyMedicineDetailsActivity extends AppCompatActivity {
             return;
         }
 
+        tvFaithHealthcare.setText("Faith Healthcare");
+        tvFaithHealthcare.setTextColor(0xFFFFFFFF);
         tvMedicineName.setText(medicineName);
+        tvMedicineName.setTextColor(0xFFFFFFFF);
         edDetails.setText(details);
+        edDetails.setTextColor(0xFF222222);
+        edDetails.setBackgroundColor(0xFFFFFFFF);
         tvTotalCost.setText(String.format(Locale.getDefault(), "Total Cost: KES %.2f", medicinePrice));
+        tvTotalCost.setTextColor(0xFFFFFFFF);
     }
 
     private void setupButtons() {
@@ -86,6 +94,8 @@ public class BuyMedicineDetailsActivity extends AppCompatActivity {
                 finish();
             }
         });
+        btnBack.setTextColor(0xFFFFFFFF);
+        btnBack.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xFF1565C0));
 
         btnAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +103,8 @@ public class BuyMedicineDetailsActivity extends AppCompatActivity {
                 addToCart();
             }
         });
+        btnAddToCart.setTextColor(0xFFFFFFFF);
+        btnAddToCart.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xFF1565C0));
     }
 
     private void addToCart() {

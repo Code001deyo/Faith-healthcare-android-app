@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <bitmap
+            android:src="@drawable/backg"
+            android:gravity="fill" />
+    </item>
+    <item>
+        <color android:color="#CC222F3E" /> <!-- 80% opacity dark overlay -->
+    </item>
+</layer-list>

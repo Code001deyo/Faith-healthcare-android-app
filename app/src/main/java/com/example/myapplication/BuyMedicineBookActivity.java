@@ -68,11 +68,18 @@ public class BuyMedicineBookActivity extends AppCompatActivity {
         }
 
         try {
-            String[] priceParts = price.split(Pattern.quote(":"));
-            if (priceParts.length < 2) {
-                throw new IllegalArgumentException("Invalid price format");
+            // First try to parse as direct float
+            try {
+                totalAmount = Float.parseFloat(price);
+            } catch (NumberFormatException e) {
+                // If that fails, try to parse from "Price: X" format
+                String[] priceParts = price.split(Pattern.quote(":"));
+                if (priceParts.length < 2) {
+                    throw new IllegalArgumentException("Invalid price format");
+                }
+                totalAmount = Float.parseFloat(priceParts[1].trim().replace("KES", "").trim());
             }
-            totalAmount = Float.parseFloat(priceParts[1].trim());
+            
             tvTotalAmount.setText(String.format(Locale.getDefault(), "Total Amount: KES %.2f", totalAmount));
             tvDeliveryDate.setText(String.format("Delivery Date: %s", deliveryDate));
         } catch (Exception e) {

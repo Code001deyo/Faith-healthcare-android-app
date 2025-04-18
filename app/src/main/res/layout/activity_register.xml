@@ -7,19 +7,25 @@
     android:padding="24dp"
     android:background="@drawable/back1">
 
-    <ImageView
+    <FrameLayout
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="30dp"
-        android:src="@drawable/logo" />
+        android:background="@drawable/logo_white_bg">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/logo"
+            android:scaleType="centerInside" />
+    </FrameLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="24/7 Healthcare"
-        android:textColor="@color/purple_500"
+        android:text="Faith Healthcare"
+        android:textColor="@android:color/white"
         android:textSize="32sp"
         android:textStyle="bold"
         android:layout_gravity="center"
@@ -35,8 +41,8 @@
         android:drawablePadding="10dp"
         android:hint="Username"
         android:padding="16dp"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black" />
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white" />
 
     <EditText
         android:id="@+id/editTextRegEmail"
@@ -49,8 +55,8 @@
         android:hint="Email Address"
         android:inputType="textEmailAddress"
         android:padding="16dp"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black" />
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white" />
 
     <EditText
         android:id="@+id/editTextRegPassword"
@@ -63,8 +69,8 @@
         android:hint="Password"
         android:inputType="textPassword"
         android:padding="16dp"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black" />
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white" />
 
     <EditText
         android:id="@+id/editTextRegConfirmPassword"
@@ -77,8 +83,8 @@
         android:hint="Confirm Password"
         android:inputType="textPassword"
         android:padding="16dp"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black" />
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white" />
 
     <Button
         android:id="@+id/buttonRegister"
@@ -97,7 +103,7 @@
         android:layout_gravity="center"
         android:padding="8dp"
         android:text="Already have an account? Login"
-        android:textColor="@color/purple_500"
+        android:textColor="@android:color/white"
         android:textSize="16sp" />
 
 </LinearLayout>

@@ -82,43 +82,58 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        Database db = new Database(this);
+        
         // Special handling for admin login
-        if (rbAdmin.isChecked() && username.equals("admin") && !password.equals("admin123")) {
-            Toast.makeText(this, "Invalid admin credentials", Toast.LENGTH_SHORT).show();
-            return;
+        if (rbAdmin.isChecked()) {
+            if (username.equals("admin") && password.equals("admin123")) {
+                // Save admin login state
+                SharedPreferences sharedpreferences = getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("username", username);
+                editor.putBoolean("isadmin", true);
+                editor.apply();
+
+                Toast.makeText(this, "Admin Login Success", Toast.LENGTH_SHORT).show();
+                
+                // Start admin activity
+                try {
+                    Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                    startActivity(intent);
+                    finish(); // Close login activity
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Error starting admin activity", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            } else {
+                Toast.makeText(this, "Invalid admin credentials", Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
 
-        Database db = new Database(this);
+        // Handle regular user login
         int loginResult = db.login(username, password);
         Log.d("LoginActivity", "Login attempt result: " + loginResult);
 
         if (loginResult > 0) {
-            boolean isAdmin = loginResult == 2;
-            
-            // Check if user type matches selection
-            if ((isAdmin && !rbAdmin.isChecked()) || (!isAdmin && rbAdmin.isChecked())) {
-                Toast.makeText(this, "Invalid credentials for selected user type", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
             // Save login state
             SharedPreferences sharedpreferences = getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putString("username", username);
-            editor.putBoolean("isadmin", isAdmin);
+            editor.putBoolean("isadmin", false);
             editor.apply();
 
             Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
 
-            // Navigate to appropriate screen
-            Intent intent;
-            if (isAdmin) {
-                intent = new Intent(LoginActivity.this, AdminActivity.class);
-            } else {
-                intent = new Intent(LoginActivity.this, HomeActivity.class);
+            try {
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                startActivity(intent);
+                finish(); // Close login activity
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Error starting home activity", Toast.LENGTH_SHORT).show();
             }
-            startActivity(intent);
-            finish(); // Close login activity
         } else {
             Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
         }

@@ -18,6 +18,7 @@
     <string name="surgeon_icon">Surgeon Icon</string>
     <string name="cardiologist_icon">Cardiologist Icon</string>
     <string name="back_icon">Back Icon</string>
+    <string name="medicine_image_desc">Medicine image</string>
 
     <!-- Buy Medicine -->
     <string name="buy_medicine">Buy Medicine</string>

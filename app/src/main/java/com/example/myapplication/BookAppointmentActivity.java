@@ -81,64 +81,114 @@ public class BookAppointmentActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(BookAppointmentActivity.this,FindDoctorActivity.class));
+                finish();
             }
         });
 
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Database db=new Database(getApplicationContext());
-                SharedPreferences sharedPreferences=getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
-                String username=sharedPreferences.getString("username","").toString();
-                if (db.checkAppointmentExists(username, title + "=>" + fullname, address, contact, dateButton.getText().toString(),timeButton.getText().toString())) {
-                    Toast.makeText(getApplicationContext(), "Appointment already booked", Toast.LENGTH_LONG).show();
-                }else{
-                    db.addOrder(username,title+"=>"+ fullname, address, contact,0, dateButton.getText().toString(),timeButton.getText().toString(),Float.parseFloat(fees),"appointment");
-                    Toast.makeText(getApplicationContext(), "Your appointment is done successfully ", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(BookAppointmentActivity.this,HomeActivity.class));
+                try {
+                    // Validate date and time selection
+                    if (dateButton.getText().toString().equals("Select Date") || 
+                        timeButton.getText().toString().equals("Select Time")) {
+                        Toast.makeText(getApplicationContext(), 
+                            "Please select both date and time", 
+                            Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
+                    Database db = new Database(getApplicationContext());
+                    SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", Context.MODE_PRIVATE);
+                    String username = sharedPreferences.getString("username", "");
 
+                    if (username.isEmpty()) {
+                        Toast.makeText(getApplicationContext(), 
+                            "Please login first", 
+                            Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(BookAppointmentActivity.this, LoginActivity.class));
+                        finish();
+                        return;
+                    }
+
+                    if (db.checkAppointmentExists(username, 
+                            title + "=>" + fullname, 
+                            address, 
+                            contact, 
+                            dateButton.getText().toString(),
+                            timeButton.getText().toString())) {
+                        Toast.makeText(getApplicationContext(), 
+                            "Appointment already booked", 
+                            Toast.LENGTH_LONG).show();
+                    } else {
+                        // Parse fees safely
+                        float feesValue;
+                        try {
+                            feesValue = Float.parseFloat(fees);
+                        } catch (NumberFormatException e) {
+                            feesValue = 0.0f;
+                        }
+
+                        db.addOrder(username,
+                            title + "=>" + fullname, 
+                            address, 
+                            contact,
+                            0, 
+                            dateButton.getText().toString(),
+                            timeButton.getText().toString(),
+                            feesValue,
+                            "appointment");
+
+                        Toast.makeText(getApplicationContext(), 
+                            "Your appointment is done successfully", 
+                            Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(BookAppointmentActivity.this, HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), 
+                        "Error booking appointment: " + e.getMessage(), 
+                        Toast.LENGTH_LONG).show();
                 }
-
             }
         });
 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void initDatePicker(){
+    private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                dayOfMonth=dayOfMonth+1;
-                dateButton.setText(dayOfMonth+"/"+month+"/"+year);
+                month = month + 1;
+                dateButton.setText(String.format("%02d/%02d/%d", dayOfMonth, month, year));
             }
         };
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
-
         int style = AlertDialog.THEME_HOLO_DARK;
-        datePickerDialog= new DatePickerDialog(this,style,dateSetListener,year,month,day);
-        datePickerDialog.getDatePicker().setMinDate(cal.getTimeInMillis()+86400000);
-
+        datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
+        datePickerDialog.getDatePicker().setMinDate(cal.getTimeInMillis() + 86400000);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void initTimePicker(){
+    private void initTimePicker() {
         TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                timeButton.setText(hourOfDay+":"+minute);
+                timeButton.setText(String.format("%02d:%02d", hourOfDay, minute));
             }
         };
         Calendar cal = Calendar.getInstance();
-        int hrs = cal.get(Calendar.HOUR);
+        int hrs = cal.get(Calendar.HOUR_OF_DAY);
         int mins = cal.get(Calendar.MINUTE);
-
         int style = AlertDialog.THEME_HOLO_DARK;
-        timePickerDialog= new TimePickerDialog(this,style,timeSetListener,hrs,mins,true);
+        timePickerDialog = new TimePickerDialog(this, style, timeSetListener, hrs, mins, true);
     }
 }

@@ -4,13 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class HealthArticlesDeatails extends AppCompatActivity {
     TextView tv1;
     ImageView img;
+    Button linkButton;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -20,6 +24,7 @@ public class HealthArticlesDeatails extends AppCompatActivity {
 
         tv1 = findViewById(R.id.textViewHADtitle);
         img = findViewById(R.id.imageHADView);
+        linkButton = findViewById(R.id.buttonHADLink);
 
         Intent intent = getIntent();
         tv1.setText(intent.getStringExtra("text1"));
@@ -29,5 +34,16 @@ public class HealthArticlesDeatails extends AppCompatActivity {
             img.setImageResource(resId);
         }
 
+        // Set the online resource link if provided
+        if (intent.hasExtra("articleUrl")) {
+            final String url = intent.getStringExtra("articleUrl");
+            linkButton.setVisibility(View.VISIBLE);
+            linkButton.setOnClickListener(v -> {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(browserIntent);
+            });
+        } else {
+            linkButton.setVisibility(View.GONE);
+        }
     }
 }

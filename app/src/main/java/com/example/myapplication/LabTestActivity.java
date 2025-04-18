@@ -65,26 +65,6 @@ public class LabTestActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewBM);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
-        // Setup featured package
-        featuredPackageView = findViewById(R.id.featuredPackage);
-        featuredName = featuredPackageView.findViewById(R.id.line_a);
-        featuredDetails = featuredPackageView.findViewById(R.id.line_b);
-        featuredPrice = featuredPackageView.findViewById(R.id.line_c);
-        featuredIcon = featuredPackageView.findViewById(R.id.packageIcon);
-
-        featuredName.setText(packages[0][0]);
-        featuredDetails.setText(packages[0][1]);
-        featuredPrice.setText("Ksh " + packages[0][4] + "/-");
-        featuredIcon.setImageResource(R.drawable.bodycheckup);
-
-        featuredPackageView.setOnClickListener(v -> {
-            Intent it = new Intent(LabTestActivity.this, LabTestDetailsActivity.class);
-            it.putExtra("text1", packages[0][0]);
-            it.putExtra("text2", package_details[0]);
-            it.putExtra("text3", packages[0][4]);
-            startActivity(it);
-        });
-
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,8 +74,8 @@ public class LabTestActivity extends AppCompatActivity {
         });
 
         list = new ArrayList<>();
-        // Start from index 1 since index 0 is featured
-        for(int i = 1; i < packages.length; i++){
+        // Show all packages (including Full Body Checkup) in the main grid
+        for(int i = 0; i < packages.length; i++){
             item = new HashMap<>();
             item.put("line1", packages[i][0]);
             item.put("line2", packages[i][1]);
@@ -104,8 +84,8 @@ public class LabTestActivity extends AppCompatActivity {
         }
 
         adapter = new LabTestAdapter(this, list, position -> {
-            // Add 1 to position since we skipped the featured package
-            int actualPosition = position + 1;
+            // Use actual position directly
+            int actualPosition = position;
             Intent it = new Intent(LabTestActivity.this, LabTestDetailsActivity.class);
             it.putExtra("text1", packages[actualPosition][0]);
             it.putExtra("text2", package_details[actualPosition]);

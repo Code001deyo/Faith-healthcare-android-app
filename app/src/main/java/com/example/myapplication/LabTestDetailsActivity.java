@@ -27,7 +27,7 @@ public class LabTestDetailsActivity extends AppCompatActivity {
         edDetails=findViewById(R.id.listViewBMCart);
         edDetails.setKeyListener(null);
         btnAddToCart=findViewById(R.id.buttonBMToCart);
-        btnBack=findViewById(R.id.buttonBMToCart);
+        btnBack=findViewById(R.id.buttonBMDBack);
 
         Intent intent = getIntent();
         tvPackageName.setText(intent.getStringExtra("text1"));
@@ -37,8 +37,7 @@ public class LabTestDetailsActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LabTestDetailsActivity.this, LabTestActivity.class));
-
+                finish(); // Properly go back to previous page
             }
         });
         btnAddToCart.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +55,7 @@ public class LabTestDetailsActivity extends AppCompatActivity {
                 }
                 else{
                     db.addCart(username,product,price,"lab");
+                    db.addOrder(username, product, "", "", 0, "", "", price, "lab"); // Ensure order is created
                     Toast.makeText(getApplicationContext(),"Record Inserted to Cart",Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(LabTestDetailsActivity.this, LabTestActivity.class));
                 }
